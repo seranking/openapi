@@ -1,0 +1,46 @@
+name: Validate OpenAPI Specs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'openapi/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'openapi/**'
+
+jobs:
+  validate:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Redocly CLI
+        run: npm install -g @redocly/cli
+
+      - name: Lint Data API (YAML)
+        run: redocly lint openapi/data-api.yaml
+
+      - name: Validate JSON matches YAML
+        run: |
+          npm install -g js-yaml
+          node -e "
+            const fs = require('fs');
+            const yaml = require('js-yaml');
+            const yamlSpec = yaml.load(fs.readFileSync('openapi/data-api.yaml', 'utf8'));
+            const jsonSpec = JSON.parse(fs.readFileSync('openapi/data-api.json', 'utf8'));
+            const yamlStr = JSON.stringify(yamlSpec, null, 2);
+            const jsonStr = JSON.stringify(jsonSpec, null, 2);
+            if (yamlStr !== jsonStr) {
+              console.error('ERROR: JSON and YAML specs are out of sync');
+              process.exit(1);
+            }
+            console.log('JSON and YAML specs are in sync');
+          "
