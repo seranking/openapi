@@ -3809,7 +3809,21 @@ paths:
           example: base_domain
       responses:
         '200':
-          description: Successful response
+          description: |-
+            Successful response.
+
+            Changes since 2026-09-29 (new AI Search data source):
+
+            - `summary.average_position` is always `null`.
+            - `time_series.organic_traffic`, `time_series.overall_traffic` and
+              `time_series.average_position` are empty arrays.
+            - `summary.brand_presence` counts the prompts whose answer mentions the
+              brand as a recognized entity, instead of a text match on the brand
+              name.
+            - `summary.*.previous` is the value of the previous monthly snapshot
+              (`null` when unknown), and `change_absolute` / `change_percent` are
+              computed from it and signed. Before, `previous` was always `null`
+              and the change was reported as the current value and 100%.
           content:
             application/json: {}
   /v1/ai-search/overview/by-engine/time-series:
@@ -3859,7 +3873,21 @@ paths:
           example: base_domain
       responses:
         '200':
-          description: Successful response
+          description: |-
+            Successful response.
+
+            Changes since 2026-09-29 (new AI Search data source):
+
+            - `summary.average_position` is always `null`.
+            - `time_series.organic_traffic`, `time_series.overall_traffic` and
+              `time_series.average_position` are empty arrays.
+            - `summary.brand_presence` counts the prompts whose answer mentions the
+              brand as a recognized entity, instead of a text match on the brand
+              name.
+            - `summary.*.previous` is the value of the previous monthly snapshot
+              (`null` when unknown), and `change_absolute` / `change_percent` are
+              computed from it and signed. Before, `previous` was always `null`
+              and the change was reported as the current value and 100%.
           content:
             application/json: {}
   /v1/ai-search/overview/leaderboard:
@@ -3909,7 +3937,12 @@ paths:
           example: base_domain
       responses:
         '200':
-          description: Successful response
+          description: |-
+            Successful response.
+
+            Since 2026-09-29 (new AI Search data source) `brand_presence` counts
+            the prompts whose answer mentions the brand as a recognized entity,
+            instead of a text match on the brand name.
           content:
             application/json: {}
   /v1/ai-search/discover-brand:
@@ -3965,6 +3998,11 @@ paths:
       description: >-
         Fetches a list of prompts where a specified domain, subdomain, or URL
         appears in the results of a chosen LLM.
+
+
+        The `filter[volume]`, `filter[keyword_count]` and
+        `filter[characters_count]` filters are deprecated and will be removed
+        on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).
       parameters:
         - name: apikey
           in: query
@@ -4023,6 +4061,10 @@ paths:
           in: query
           schema:
             type: integer
+            maximum: 1000
+          description: >-
+            Number of prompts per page, at most 1000. A larger value is rejected
+            with 400.
           example: 100
         - name: filter[multi_keyword_included]
           in: query
@@ -4053,37 +4095,74 @@ paths:
             ]
         - name: filter[volume][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 100
         - name: filter[volume][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 100000
         - name: filter[keyword_count][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 5
         - name: filter[keyword_count][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 8
         - name: filter[characters_count][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 15
         - name: filter[characters_count][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 50
       responses:
         '200':
-          description: Successful response
+          description: |-
+            Successful response.
+
+            Changes since 2026-09-29 (new AI Search data source):
+
+            - `prompts[].volume` is `null` for `engine=ai-overview` and `0` for
+              the LLM engines.
+            - `date` is the current month.
+          content:
+            application/json: {}
+        '400':
+          description: >-
+            Invalid request, e.g. `limit` above 1000 or a filter that is no
+            longer supported (`unsupported filter`).
           content:
             application/json: {}
   /v1/ai-search/prompts-by-brand:
@@ -4095,6 +4174,11 @@ paths:
       description: >-
         Retrieves a list of prompts where a specified brand name is mentioned in
         the results of a chosen LLM.
+
+
+        The `filter[volume]`, `filter[keyword_count]` and
+        `filter[characters_count]` filters are deprecated and will be removed
+        on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).
       parameters:
         - name: apikey
           in: query
@@ -4144,6 +4228,10 @@ paths:
           in: query
           schema:
             type: integer
+            maximum: 1000
+          description: >-
+            Number of prompts per page, at most 1000. A larger value is rejected
+            with 400.
           example: 10
         - name: filter[multi_keyword_included]
           in: query
@@ -4174,37 +4262,74 @@ paths:
             ]
         - name: filter[volume][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 100
         - name: filter[volume][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 100000
         - name: filter[keyword_count][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 5
         - name: filter[keyword_count][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 8
         - name: filter[characters_count][from]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 15
         - name: filter[characters_count][to]
           in: query
+          deprecated: true
+          description: >-
+            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            filter.
           schema:
             type: integer
           example: 50
       responses:
         '200':
-          description: Successful response
+          description: |-
+            Successful response.
+
+            Changes since 2026-09-29 (new AI Search data source):
+
+            - `prompts[].volume` is `null` for `engine=ai-overview` and `0` for
+              the LLM engines.
+            - `date` is the current month.
+          content:
+            application/json: {}
+        '400':
+          description: >-
+            Invalid request, e.g. `limit` above 1000 or a filter that is no
+            longer supported (`unsupported filter`).
           content:
             application/json: {}
   /v1/serp/classic/tasks:
