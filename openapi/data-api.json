@@ -5094,7 +5094,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response.\n\nChanges since 2026-09-29 (new AI Search data source):\n\n- `summary.average_position` is always `null`.\n- `time_series.organic_traffic`, `time_series.overall_traffic` and\n  `time_series.average_position` are empty arrays.\n- `summary.brand_presence` counts the prompts whose answer mentions the\n  brand as a recognized entity, instead of a text match on the brand\n  name.\n- `summary.*.previous` is the value of the previous monthly snapshot\n  (`null` when unknown), and `change_absolute` / `change_percent` are\n  computed from it and signed. Before, `previous` was always `null`\n  and the change was reported as the current value and 100%.",
             "content": {
               "application/json": {}
             }
@@ -5168,7 +5168,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response.\n\nChanges since 2026-09-29 (new AI Search data source):\n\n- `summary.average_position` is always `null`.\n- `time_series.organic_traffic`, `time_series.overall_traffic` and\n  `time_series.average_position` are empty arrays.\n- `summary.brand_presence` counts the prompts whose answer mentions the\n  brand as a recognized entity, instead of a text match on the brand\n  name.\n- `summary.*.previous` is the value of the previous monthly snapshot\n  (`null` when unknown), and `change_absolute` / `change_percent` are\n  computed from it and signed. Before, `previous` was always `null`\n  and the change was reported as the current value and 100%.",
             "content": {
               "application/json": {}
             }
@@ -5244,7 +5244,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response.\n\nSince 2026-09-29 (new AI Search data source) `brand_presence` counts\nthe prompts whose answer mentions the brand as a recognized entity,\ninstead of a text match on the brand name.",
             "content": {
               "application/json": {}
             }
@@ -5318,7 +5318,7 @@
           "AI search"
         ],
         "summary": "prompts by target",
-        "description": "Fetches a list of prompts where a specified domain, subdomain, or URL appears in the results of a chosen LLM.",
+        "description": "Fetches a list of prompts where a specified domain, subdomain, or URL appears in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters were removed on 2026-10-14. A page holds at most 1000 prompts (`limit`).",
         "parameters": [
           {
             "name": "apikey",
@@ -5400,8 +5400,10 @@
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "maximum": 1000
             },
+            "description": "Number of prompts per page, at most 1000. A larger value is rejected with 400.",
             "example": 100
           },
           {
@@ -5423,6 +5425,8 @@
           {
             "name": "filter[volume][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5431,6 +5435,8 @@
           {
             "name": "filter[volume][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5439,6 +5445,8 @@
           {
             "name": "filter[keyword_count][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5447,6 +5455,8 @@
           {
             "name": "filter[keyword_count][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5455,6 +5465,8 @@
           {
             "name": "filter[characters_count][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5463,6 +5475,8 @@
           {
             "name": "filter[characters_count][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5471,7 +5485,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response.\n\nChanges since 2026-09-29 (new AI Search data source):\n\n- `prompts[].volume` is `null` for `engine=ai-overview` and `0` for\n  the LLM engines.\n- `date` is the current month.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Invalid request, e.g. `limit` above 1000 or a filter that is no longer supported (`unsupported filter`).",
             "content": {
               "application/json": {}
             }
@@ -5486,7 +5506,7 @@
           "AI search"
         ],
         "summary": "prompts by brand",
-        "description": "Retrieves a list of prompts where a specified brand name is mentioned in the results of a chosen LLM.",
+        "description": "Retrieves a list of prompts where a specified brand name is mentioned in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters were removed on 2026-10-14. A page holds at most 1000 prompts (`limit`).",
         "parameters": [
           {
             "name": "apikey",
@@ -5559,8 +5579,10 @@
             "name": "limit",
             "in": "query",
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "maximum": 1000
             },
+            "description": "Number of prompts per page, at most 1000. A larger value is rejected with 400.",
             "example": 10
           },
           {
@@ -5582,6 +5604,8 @@
           {
             "name": "filter[volume][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5590,6 +5614,8 @@
           {
             "name": "filter[volume][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5598,6 +5624,8 @@
           {
             "name": "filter[keyword_count][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5606,6 +5634,8 @@
           {
             "name": "filter[keyword_count][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5614,6 +5644,8 @@
           {
             "name": "filter[characters_count][from]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5622,6 +5654,8 @@
           {
             "name": "filter[characters_count][to]",
             "in": "query",
+            "deprecated": true,
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5630,7 +5664,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful response.\n\nChanges since 2026-09-29 (new AI Search data source):\n\n- `prompts[].volume` is `null` for `engine=ai-overview` and `0` for\n  the LLM engines.\n- `date` is the current month.",
+            "content": {
+              "application/json": {}
+            }
+          },
+          "400": {
+            "description": "Invalid request, e.g. `limit` above 1000 or a filter that is no longer supported (`unsupported filter`).",
             "content": {
               "application/json": {}
             }
