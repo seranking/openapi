@@ -30,7 +30,7 @@ jobs:
 
       - name: Validate JSON matches YAML
         run: |
-          npm install -g js-yaml
+          npm install --no-save js-yaml
           node -e "
             const fs = require('fs');
             const yaml = require('js-yaml');
