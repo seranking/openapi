@@ -4001,8 +4001,8 @@ paths:
 
 
         The `filter[volume]`, `filter[keyword_count]` and
-        `filter[characters_count]` filters are deprecated and will be removed
-        on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).
+        `filter[characters_count]` filters were removed
+        on 2026-10-14. A page holds at most 1000 prompts (`limit`).
       parameters:
         - name: apikey
           in: query
@@ -4097,7 +4097,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4106,7 +4106,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4115,7 +4115,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4124,7 +4124,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4133,7 +4133,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4142,7 +4142,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4177,8 +4177,8 @@ paths:
 
 
         The `filter[volume]`, `filter[keyword_count]` and
-        `filter[characters_count]` filters are deprecated and will be removed
-        on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).
+        `filter[characters_count]` filters were removed
+        on 2026-10-14. A page holds at most 1000 prompts (`limit`).
       parameters:
         - name: apikey
           in: query
@@ -4264,7 +4264,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4273,7 +4273,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4282,7 +4282,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4291,7 +4291,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4300,7 +4300,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer
@@ -4309,7 +4309,7 @@ paths:
           in: query
           deprecated: true
           description: >-
-            Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported
+            Removed on 2026-10-14; requests that use it get 400 unsupported
             filter.
           schema:
             type: integer

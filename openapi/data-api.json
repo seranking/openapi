@@ -5318,7 +5318,7 @@
           "AI search"
         ],
         "summary": "prompts by target",
-        "description": "Fetches a list of prompts where a specified domain, subdomain, or URL appears in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters are deprecated and will be removed on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).",
+        "description": "Fetches a list of prompts where a specified domain, subdomain, or URL appears in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters were removed on 2026-10-14. A page holds at most 1000 prompts (`limit`).",
         "parameters": [
           {
             "name": "apikey",
@@ -5426,7 +5426,7 @@
             "name": "filter[volume][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5436,7 +5436,7 @@
             "name": "filter[volume][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5446,7 +5446,7 @@
             "name": "filter[keyword_count][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5456,7 +5456,7 @@
             "name": "filter[keyword_count][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5466,7 +5466,7 @@
             "name": "filter[characters_count][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5476,7 +5476,7 @@
             "name": "filter[characters_count][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5506,7 +5506,7 @@
           "AI search"
         ],
         "summary": "prompts by brand",
-        "description": "Retrieves a list of prompts where a specified brand name is mentioned in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters are deprecated and will be removed on <CUTOVER_DATE>. A page holds at most 1000 prompts (`limit`).",
+        "description": "Retrieves a list of prompts where a specified brand name is mentioned in the results of a chosen LLM.\n\nThe `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` filters were removed on 2026-10-14. A page holds at most 1000 prompts (`limit`).",
         "parameters": [
           {
             "name": "apikey",
@@ -5605,7 +5605,7 @@
             "name": "filter[volume][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5615,7 +5615,7 @@
             "name": "filter[volume][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5625,7 +5625,7 @@
             "name": "filter[keyword_count][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5635,7 +5635,7 @@
             "name": "filter[keyword_count][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5645,7 +5645,7 @@
             "name": "filter[characters_count][from]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
@@ -5655,7 +5655,7 @@
             "name": "filter[characters_count][to]",
             "in": "query",
             "deprecated": true,
-            "description": "Removed on <CUTOVER_DATE>; requests that use it get 400 unsupported filter.",
+            "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
             "schema": {
               "type": "integer"
             },
