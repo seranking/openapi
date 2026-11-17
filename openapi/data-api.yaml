@@ -247,7 +247,8 @@ tags:
 
 
       **Note:** Using the ‘Add SERP Tasks’ endpoint costs 10 credits per
-      request.
+      keyword: each keyword in `query` creates one task, so a request with 10
+      keywords costs 100 credits.
 
 
       ### Workflow
