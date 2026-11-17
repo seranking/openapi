@@ -5691,6 +5691,98 @@
             "application/json": {
               "schema": {
                 "type": "object",
+                "description": "One of `location_id` or `google_ads_location_id` must be provided.",
+                "required": [
+                  "search_engine",
+                  "device",
+                  "language_code",
+                  "query"
+                ],
+                "properties": {
+                  "search_engine": {
+                    "type": "string",
+                    "enum": [
+                      "google"
+                    ],
+                    "description": "Search engine. Only `google` is supported."
+                  },
+                  "device": {
+                    "type": "string",
+                    "enum": [
+                      "desktop",
+                      "mobile"
+                    ],
+                    "description": "Search device type."
+                  },
+                  "language_code": {
+                    "type": "string",
+                    "description": "Language code (ISO 639-1), e.g. `fr`."
+                  },
+                  "location_id": {
+                    "type": "integer",
+                    "description": "SE Ranking location ID, from `GET /v1/serp/classic/locations`. One of `location_id` or `google_ads_location_id` is required."
+                  },
+                  "google_ads_location_id": {
+                    "type": "integer",
+                    "description": "Google Ads geo target ID. One of `location_id` or `google_ads_location_id` is required."
+                  },
+                  "query": {
+                    "type": "array",
+                    "minItems": 1,
+                    "description": "Keywords to collect the SERP for; one task is created per keyword. Up to 10 keywords per request by default; more returns `400`.",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 255
+                    }
+                  },
+                  "tag": {
+                    "type": "string",
+                    "description": "Optional tag for grouping tasks."
+                  },
+                  "pingback_url": {
+                    "type": "string",
+                    "description": "HTTP or HTTPS webhook URL that receives a GET request when a task completes. Literal `$id` and `$tag` placeholders are replaced with the task ID and tag."
+                  },
+                  "expected_serp": {
+                    "type": "array",
+                    "description": "Optional. What the SERP of each query is expected to contain, as an array parallel to `query`: the item at index i applies to the query at index i. Use `null` (or `{}`) for a query without expectations. The array may be shorter than `query`, but not longer. Domains are checked by syntax only (no DNS lookup), then stored in lower case and punycode, without `www` and duplicates. URLs, IP addresses and names without a top-level domain are rejected. Any invalid value or unknown field returns `400` with the path of the field, for example `Invalid expected_serp[1].top10_domains[2]. Must be a valid domain.`, and no tasks are created.",
+                    "items": {
+                      "type": "object",
+                      "nullable": true,
+                      "additionalProperties": false,
+                      "properties": {
+                        "top10_domains": {
+                          "type": "array",
+                          "description": "Domains expected in the top 10 results.",
+                          "maxItems": 10,
+                          "items": {
+                            "type": "string",
+                            "format": "hostname",
+                            "maxLength": 253
+                          },
+                          "example": [
+                            "semrush.com",
+                            "ahrefs.com"
+                          ]
+                        },
+                        "domain": {
+                          "type": "string",
+                          "format": "hostname",
+                          "maxLength": 253,
+                          "description": "A domain expected in the results.",
+                          "example": "ahrefs.com"
+                        },
+                        "position": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 100,
+                          "description": "The position `domain` is expected at. Requires `domain`.",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                },
                 "example": {
                   "search_engine": "google",
                   "device": "desktop",
@@ -5698,7 +5790,24 @@
                   "location_id": 12998,
                   "query": [
                     "seo report",
-                    "seo api"
+                    "seo api",
+                    "seo tools"
+                  ],
+                  "expected_serp": [
+                    {
+                      "top10_domains": [
+                        "semrush.com",
+                        "ahrefs.com"
+                      ],
+                      "domain": "ahrefs.com",
+                      "position": 3
+                    },
+                    null,
+                    {
+                      "top10_domains": [
+                        "moz.com"
+                      ]
+                    }
                   ],
                   "tag": "test_tag",
                   "pingback_url": "https://your-webhook.example.com?id=$id&user_tag=$tag"
