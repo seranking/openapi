@@ -18,42 +18,73 @@ See [GitHub Releases](https://github.com/seranking/openapi/releases) for a histo
 
 ### `/openapi`
 
-| File              | Description                                      |
-| ----------------- | ------------------------------------------------ |
-| `data-api.yaml`   | SE Ranking Data API specification (YAML format)  |
-| `data-api.json`   | SE Ranking Data API specification (JSON format)  |
+| API                  | YAML                       | JSON                       | Documentation                                                      |
+| -------------------- | -------------------------- | -------------------------- | ------------------------------------------------------------------ |
+| Data API             | `data-api.yaml`            | `data-api.json`            | [seranking.com/api/data](https://seranking.com/api/data/)          |
+| Project API          | `project-api.yaml`         | `project-api.json`         | [seranking.com/api/project](https://seranking.com/api/project/)    |
+| Local Marketing API  | `local-marketing-api.yaml` | `local-marketing-api.json` | [seranking.com/api/local-marketing-api](https://seranking.com/api/local-marketing-api/) |
+| SE Visible API       | `se-visible-api.yaml`      | `se-visible-api.json`      | [seranking.com/api/se-visible](https://seranking.com/api/se-visible/) |
 
-Both files contain the same specification. Use whichever format your tooling prefers.
+The YAML and JSON file of each API contain the same specification. Use whichever format your tooling prefers.
+
+The specs follow the public API documentation: every endpoint, parameter and response field described there is in
+the spec, with the documented request and response examples. Each operation links back to its documentation section.
 
 ## Available APIs
 
 ### Data API
 
-SEO data API providing programmatic access to:
+SEO data for any domain, URL or keyword:
 
-- **Backlinks**: Backlink profiles, referring domains, anchors, authority scores, and historical trends
-- **Domain Analysis**: Organic/paid keyword data, competitor research, traffic estimates, and domain authority
-- **Keyword Research**: Search volume, keyword difficulty, related and long-tail keywords, SERP features
-- **AI Search**: AI Overview analysis, brand monitoring in AI-generated answers, prompt-level insights
-- **SERP Results**: Real-time and on-demand search engine results with full feature parsing
-- **Website Audit**: Technical SEO audits with crawl data, issue detection, and page-level analysis
-- **Account & System**: API key validation, rate limits, and available database regions
+- **Backlinks**: backlink profiles, referring domains, anchors, authority scores and historical trends
+- **Domain Analysis**: organic and paid keyword rankings, competitors, traffic estimates and domain overviews
+- **Keyword Research**: search volume, keyword difficulty, similar, related, question and long-tail keywords
+- **AI Search**: brand and domain visibility in AI-generated answers, leaderboards and prompt-level data
+- **SERP**: search engine results pages collected on demand
+- **Website Audit**: technical SEO audits with crawl data, issues and page-level analysis
+- **Account System**: subscription and credit balance
+
+### Project API
+
+The SE Ranking projects in your account: projects and project groups, keywords and rankings, search engines,
+competitors, URL tags, Google Search Console data, the marketing plan, website audits, Backlink Checker and
+AI Results Tracker.
+
+### Local Marketing API
+
+Read-only data for your Local Marketing locations: location profiles and overviews, local rankings, Google Business
+Profile reports, business listings, reviews and Local Marketing audits.
+
+### SE Visible API
+
+Brand visibility in AI engines: SE Visible projects, brands, topics and prompts, prompt results, sources, engines,
+locations and the subscription.
 
 ## Authentication
 
-All SE Ranking API endpoints require an API key passed as a query parameter:
+All four APIs are served from `https://api.seranking.com` and use the same SE Ranking API key. Send it in the
+`Authorization` header with the `Token` scheme (recommended):
+
+```bash
+curl 'https://api.seranking.com/v1/account/subscription' \
+  -H 'Authorization: Token YOUR_API_KEY'
+```
+
+or as the `apikey` query parameter:
 
 ```
-https://api.seranking.com/v1/endpoint?apikey=YOUR_API_KEY
+https://api.seranking.com/v1/account/subscription?apikey=YOUR_API_KEY
 ```
 
-Get your API key from the [SE Ranking dashboard](https://online.seranking.com/dashboard.html).
+Create a key on the [API Dashboard](https://online.seranking.com/admin.api.dashboard.html). See
+[Getting API access](https://seranking.com/api/how-to-get-api/), [API rate limits](https://seranking.com/api/rate-limits/)
+and the [API credit system](https://seranking.com/api/api-credits-system/).
 
 ## Usage Examples
 
 ### Import in Swagger UI
 
-Point Swagger UI at the raw spec URL:
+Point Swagger UI at the raw spec URL, for example:
 
 ```
 https://raw.githubusercontent.com/seranking/openapi/main/openapi/data-api.yaml
@@ -70,10 +101,10 @@ openapi-generator-cli generate \
   -o ./seranking-python-client
 ```
 
-### Validate the Spec
+### Validate the Specs
 
 ```bash
-npx @redocly/cli lint openapi/data-api.yaml
+npx @redocly/cli lint openapi/*.yaml
 ```
 
 ## OpenAPI Version

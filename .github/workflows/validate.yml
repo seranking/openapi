@@ -25,8 +25,13 @@ jobs:
       - name: Install Redocly CLI
         run: npm install -g @redocly/cli
 
-      - name: Lint Data API (YAML)
-        run: redocly lint openapi/data-api.yaml
+      - name: Lint specs (YAML)
+        run: |
+          redocly lint \
+            openapi/data-api.yaml \
+            openapi/project-api.yaml \
+            openapi/local-marketing-api.yaml \
+            openapi/se-visible-api.yaml
 
       - name: Validate JSON matches YAML
         run: |
@@ -34,13 +39,18 @@ jobs:
           node -e "
             const fs = require('fs');
             const yaml = require('js-yaml');
-            const yamlSpec = yaml.load(fs.readFileSync('openapi/data-api.yaml', 'utf8'));
-            const jsonSpec = JSON.parse(fs.readFileSync('openapi/data-api.json', 'utf8'));
-            const yamlStr = JSON.stringify(yamlSpec, null, 2);
-            const jsonStr = JSON.stringify(jsonSpec, null, 2);
-            if (yamlStr !== jsonStr) {
-              console.error('ERROR: JSON and YAML specs are out of sync');
-              process.exit(1);
+            let failed = false;
+            for (const name of ['data-api', 'project-api', 'local-marketing-api', 'se-visible-api']) {
+              const yamlSpec = yaml.load(fs.readFileSync('openapi/' + name + '.yaml', 'utf8'));
+              const jsonSpec = JSON.parse(fs.readFileSync('openapi/' + name + '.json', 'utf8'));
+              const yamlStr = JSON.stringify(yamlSpec, null, 2);
+              const jsonStr = JSON.stringify(jsonSpec, null, 2);
+              if (yamlStr !== jsonStr) {
+                console.error('ERROR: ' + name + ' JSON and YAML specs are out of sync');
+                failed = true;
+              } else {
+                console.log(name + ': JSON and YAML specs are in sync');
+              }
             }
-            console.log('JSON and YAML specs are in sync');
+            if (failed) process.exit(1);
           "
