@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "SE Ranking Data API",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "The Data API returns SEO data for any domain, URL or keyword: backlink profiles, domain traffic and keyword rankings, keyword research, AI search visibility, SERP results and website audits. Requests are billed in API credits.\n\n## Authentication\n\nAll endpoints are served from `https://api.seranking.com` and use one SE Ranking API key, the same key for the Data API, the Project API, the Local Marketing API and the SE Visible API. Send it in the `Authorization: Token YOUR_API_KEY` header (recommended) or as the `apikey` query parameter. See [Getting API access](https://seranking.com/api/how-to-get-api/).\n\nRate limits: [API rate limits](https://seranking.com/api/rate-limits/). Credits: [API credit system](https://seranking.com/api/api-credits-system/).",
     "contact": {
       "name": "SE Ranking API Support",
@@ -12256,11 +12256,60 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "Object for filtering results. See the [Filtering results](https://seranking.com/api/data/ai-search#filtering-results) section for details.",
+            "description": "Object for filtering results, passed in the query string, e.g. `filter[multi_keyword_included]=...`. See the [Filtering results](https://seranking.com/api/data/ai-search#filtering-results) section.\n\nThe range filters `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` were removed on 2026-10-14; requests that use them get 400 unsupported filter.",
             "style": "deepObject",
             "explode": true,
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "multi_keyword_included": {
+                  "type": "string",
+                  "description": "URL-encoded JSON with the keywords the prompt must contain. See [Text search JSON structure](https://seranking.com/api/data/domain-analysis#text-search-json-structure)."
+                },
+                "multi_keyword_excluded": {
+                  "type": "string",
+                  "description": "URL-encoded JSON with the keywords the prompt must not contain. See [Text search JSON structure](https://seranking.com/api/data/domain-analysis#text-search-json-structure)."
+                },
+                "volume": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "keyword_count": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "characters_count": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
             }
           }
         ],
@@ -12443,11 +12492,60 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "Object for filtering results. See the [Filtering results](https://seranking.com/api/data/ai-search#filtering-results) section for details.",
+            "description": "Object for filtering results, passed in the query string, e.g. `filter[multi_keyword_included]=...`. See the [Filtering results](https://seranking.com/api/data/ai-search#filtering-results) section.\n\nThe range filters `filter[volume]`, `filter[keyword_count]` and `filter[characters_count]` were removed on 2026-10-14; requests that use them get 400 unsupported filter.",
             "style": "deepObject",
             "explode": true,
             "schema": {
-              "type": "object"
+              "type": "object",
+              "properties": {
+                "multi_keyword_included": {
+                  "type": "string",
+                  "description": "URL-encoded JSON with the keywords the prompt must contain. See [Text search JSON structure](https://seranking.com/api/data/domain-analysis#text-search-json-structure)."
+                },
+                "multi_keyword_excluded": {
+                  "type": "string",
+                  "description": "URL-encoded JSON with the keywords the prompt must not contain. See [Text search JSON structure](https://seranking.com/api/data/domain-analysis#text-search-json-structure)."
+                },
+                "volume": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "keyword_count": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "characters_count": {
+                  "type": "object",
+                  "deprecated": true,
+                  "description": "Removed on 2026-10-14; requests that use it get 400 unsupported filter.",
+                  "properties": {
+                    "from": {
+                      "type": "integer"
+                    },
+                    "to": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
             }
           }
         ],
