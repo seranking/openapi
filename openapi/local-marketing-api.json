@@ -1,0 +1,3253 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "SE Ranking Local Marketing API",
+    "version": "1.0.0",
+    "description": "**Local Marketing API** provides read-only endpoints to retrieve Local Marketing data for locations added to your account: location profiles and statistics, Google Business Profile reports, reviews, business listings (citations), local rankings, and audit reports.\n\nUsing the Local Marketing API, you can:\n\n- list your Local Marketing locations with key statistics, and read a location’s full business profile\n\n- pull a combined reporting overview for a location in a single request\n\n- track local rankings by keyword and tracking point, including the indexed percent\n\n- read Local Marketing audit reports and their history\n\n## Authentication\n\nAll endpoints are served from `https://api.seranking.com` and use one SE Ranking API key, the same key for the Data API, the Project API, the Local Marketing API and the SE Visible API. Send it in the `Authorization: Token YOUR_API_KEY` header (recommended) or as the `apikey` query parameter. See [Getting API access](https://seranking.com/api/how-to-get-api/).\n\nRate limits: [API rate limits](https://seranking.com/api/rate-limits/). Credits: [API credit system](https://seranking.com/api/api-credits-system/).",
+    "contact": {
+      "name": "SE Ranking API Support",
+      "url": "https://seranking.com/api/",
+      "email": "api@seranking.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://github.com/seranking/openapi/blob/main/LICENSE"
+    }
+  },
+  "externalDocs": {
+    "description": "SE Ranking Local Marketing API documentation",
+    "url": "https://seranking.com/api/local-marketing-api/"
+  },
+  "servers": [
+    {
+      "url": "https://api.seranking.com",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "tokenAuth": []
+    },
+    {
+      "apikeyQuery": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Locations",
+      "description": "**Locations API** provides endpoints to list Local Marketing locations available in your account and retrieve detailed information about a single location.\n\nDocumentation: [Locations](https://seranking.com/api/local-marketing-api/locations/)"
+    },
+    {
+      "name": "Location Overview",
+      "description": "**Location overview API** returns a combined reporting overview for a location in a single request: location details, Google Business Profile metrics and searches, reviews overview, business listings overview, the latest audit report, and a rankings summary.\n\nDocumentation: [Location overview](https://seranking.com/api/local-marketing-api/location-overview/)"
+    },
+    {
+      "name": "Local Rankings",
+      "description": "**Local Rankings API** provides endpoints to retrieve tracked keywords, position history by tracking point, and the indexed percent for a location.\n\nDocumentation: [Local Rankings](https://seranking.com/api/local-marketing-api/local-rankings/)"
+    },
+    {
+      "name": "Google Business Profile",
+      "description": "**Google Business Profile API** provides endpoints to retrieve GBP performance metrics, the keyword report, and the searches trend for a location.\n\nDocumentation: [Google Business Profile](https://seranking.com/api/local-marketing-api/google-business-profile/)"
+    },
+    {
+      "name": "Business Listings",
+      "description": "**Business Listings API** provides endpoints to list business listings for a location across connected directories and retrieve aggregated listing statistics. Note: endpoint paths use `citations`, the API term for directory listings.\n\nDocumentation: [Business Listings](https://seranking.com/api/local-marketing-api/business-listings/)"
+    },
+    {
+      "name": "Reviews",
+      "description": "**Reviews API** provides endpoints to list reviews for a location across connected review sources and retrieve aggregated review statistics.\n\nDocumentation: [Reviews](https://seranking.com/api/local-marketing-api/reviews/)"
+    },
+    {
+      "name": "Local Marketing Audit",
+      "description": "**Local Marketing Audit API** provides endpoints to retrieve the latest audit report and the audit report history for a location.\n\nDocumentation: [Local Marketing Audit](https://seranking.com/api/local-marketing-api/local-marketing-audit/)"
+    }
+  ],
+  "paths": {
+    "/v1/local-marketing/locations": {
+      "get": {
+        "operationId": "listLocations",
+        "tags": [
+          "Locations"
+        ],
+        "summary": "List locations",
+        "description": "Returns a list of Local Marketing locations accessible to the authenticated user, with key statistics for each location.\n\nIf successful, the server returns the `200` HTTP status code, an array of locations in `items`, and a `pagination` object.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/locations/#list-locations"
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Filter by a comma-separated list of location IDs, e.g. `15,18,21`.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "with_demo",
+            "in": "query",
+            "description": "Include demo locations. Default is `false`. Accounts with only demo locations receive an empty list unless this is set to `true`.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "is_active",
+            "in": "query",
+            "description": "Filter by active status.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search by location title or profile fields.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip. Default is `0`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "description": "Sorting order: `asc` or `desc`. Default is `desc`.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "Location ID."
+                          },
+                          "account_id": {
+                            "type": "integer",
+                            "description": "Owning account ID."
+                          },
+                          "account_name": {
+                            "type": "string",
+                            "description": "Owning account name (can be `null`)."
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "Location title."
+                          },
+                          "lang": {
+                            "type": "string",
+                            "description": "Location language."
+                          },
+                          "is_active": {
+                            "type": "boolean",
+                            "description": "Whether the location is active."
+                          },
+                          "is_demo": {
+                            "type": "boolean",
+                            "description": "Whether the location is a demo."
+                          },
+                          "is_sub": {
+                            "type": "boolean",
+                            "description": "Whether the location belongs to a sub-account (can be `null`)."
+                          },
+                          "is_shared": {
+                            "type": "boolean",
+                            "description": "Whether the location is shared (can be `null`)."
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "description": "Creation timestamp (can be `null`)."
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "description": "Last update timestamp (can be `null`)."
+                          },
+                          "connection_status": {
+                            "type": "string",
+                            "description": "Connection lifecycle status for the location in Local Marketing (can be `null`)."
+                          },
+                          "sync_status": {
+                            "type": "string",
+                            "description": "Current synchronization status across connected directories (can be `null`)."
+                          },
+                          "last_synced_at": {
+                            "type": "string",
+                            "description": "Last synchronization timestamp (can be `null`)."
+                          },
+                          "statistics": {
+                            "type": "object",
+                            "properties": {
+                              "reviews_count": {
+                                "type": "integer",
+                                "description": "Total number of reviews (can be `null`)."
+                              },
+                              "average_rating": {
+                                "type": "number",
+                                "description": "Average review rating. Note: computed differently from `average_rating` in [Get reviews overview](https://seranking.com/api/local-marketing-api/reviews/#get-reviews-overview) — the two values are distinct metrics and may not match (can be `null`)."
+                              },
+                              "unanswered_reviews_count": {
+                                "type": "integer",
+                                "description": "Reviews awaiting a reply (can be `null`)."
+                              },
+                              "listings_count": {
+                                "type": "integer",
+                                "description": "Number of business listings (can be `null`)."
+                              },
+                              "citations_score": {
+                                "type": "number",
+                                "description": "Citations score, 0–100 (can be `null`)."
+                              },
+                              "citations_percentile": {
+                                "type": "integer",
+                                "description": "Citations score percentile. Distinct from `citations_score` (can be `null`)."
+                              },
+                              "listed_directories_count": {
+                                "type": "integer",
+                                "description": "Directories where the location is listed (can be `null`)."
+                              },
+                              "synced_directories_count": {
+                                "type": "integer",
+                                "description": "Directories currently synchronized. A listing can be listed but not yet synced (can be `null`)."
+                              },
+                              "mismatched_directories_count": {
+                                "type": "integer",
+                                "description": "Directories with mismatched listing data (can be `null`)."
+                              },
+                              "keywords_count": {
+                                "type": "integer",
+                                "description": "Tracked keywords. Note: counts keywords, while `top_3_keywords_count`/`top_10_keywords_count` count keyword × tracking-point pairs, so TOP-N values can exceed `keywords_count` (can be `null`)."
+                              },
+                              "average_position": {
+                                "type": "number",
+                                "description": "Average local ranking position (can be `null`)."
+                              },
+                              "top_3_keywords_count": {
+                                "type": "integer",
+                                "description": "Keywords ranking in the top 3 (can be `null`)."
+                              },
+                              "top_10_keywords_count": {
+                                "type": "integer",
+                                "description": "Keywords ranking in the top 10 (can be `null`)."
+                              },
+                              "audit_score_percent": {
+                                "type": "integer",
+                                "description": "Latest audit score, in percent (can be `null`)."
+                              }
+                            },
+                            "description": "Key statistics for the location."
+                          }
+                        },
+                        "description": "List of locations."
+                      },
+                      "description": "List of locations."
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Pagination info: `total`, `limit`, `offset`."
+                    }
+                  }
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": 15,
+                      "account_id": 42,
+                      "account_name": "Acme Agency",
+                      "title": "Folk Osteria",
+                      "lang": "en",
+                      "is_active": true,
+                      "is_demo": false,
+                      "is_sub": false,
+                      "is_shared": false,
+                      "created_at": "2026-04-10 09:15:00",
+                      "updated_at": "2026-08-04 12:00:00",
+                      "connection_status": "connected",
+                      "sync_status": "synced",
+                      "last_synced_at": "2026-08-04 12:00:00",
+                      "statistics": {
+                        "reviews_count": 60,
+                        "average_rating": 3.8,
+                        "unanswered_reviews_count": 8,
+                        "listings_count": 57,
+                        "citations_score": 85,
+                        "citations_percentile": 78,
+                        "listed_directories_count": 66,
+                        "synced_directories_count": 49,
+                        "mismatched_directories_count": 3,
+                        "keywords_count": 355,
+                        "average_position": 10.97,
+                        "top_3_keywords_count": 49,
+                        "top_10_keywords_count": 167,
+                        "audit_score_percent": 85
+                      }
+                    }
+                  ],
+                  "pagination": {
+                    "total": 2,
+                    "limit": 100,
+                    "offset": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations?is_active=true&limit=100&offset=0' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}": {
+      "get": {
+        "operationId": "getLocationDetails",
+        "tags": [
+          "Locations"
+        ],
+        "summary": "Get location details",
+        "description": "Returns detailed information about a single location: its business profile, owner, permissions, Google connection state, and latest audit score.\n\nIf successful, the server returns the `200` HTTP status code and a location details object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/locations/#get-location-details"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "account_id": {
+                      "type": "integer"
+                    },
+                    "account_name": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "lang": {
+                      "type": "string"
+                    },
+                    "is_active": {
+                      "type": "boolean"
+                    },
+                    "is_demo": {
+                      "type": "boolean"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "connection_status": {
+                      "type": "string"
+                    },
+                    "sync_status": {
+                      "type": "string"
+                    },
+                    "last_synced_at": {
+                      "type": "string"
+                    },
+                    "statistics": {
+                      "type": "object",
+                      "properties": {
+                        "reviews_count": {
+                          "type": "integer"
+                        },
+                        "average_rating": {
+                          "type": "number"
+                        },
+                        "listings_count": {
+                          "type": "integer"
+                        },
+                        "citations_score": {
+                          "type": "number"
+                        },
+                        "audit_score_percent": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "profile": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Business name."
+                        },
+                        "primary_phone": {
+                          "type": "string",
+                          "description": "Primary phone number (can be `null`)."
+                        },
+                        "additional_phones": {
+                          "type": "array",
+                          "items": {
+                            "description": "Additional phone numbers."
+                          },
+                          "description": "Additional phone numbers."
+                        },
+                        "website": {
+                          "type": "string",
+                          "description": "Website URL (can be `null`)."
+                        },
+                        "description": {
+                          "type": "string",
+                          "description": "Business description (can be `null`)."
+                        },
+                        "address": {
+                          "type": "object",
+                          "properties": {
+                            "postal_code": {
+                              "type": "string"
+                            },
+                            "region_code": {
+                              "type": "string"
+                            },
+                            "region_display_name": {
+                              "type": "string"
+                            },
+                            "administrative_area": {
+                              "type": "string"
+                            },
+                            "locality": {
+                              "type": "string"
+                            },
+                            "address_lines": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "description": "Address: `postal_code`, `region_code`, `region_display_name`, `administrative_area`, `locality`, `address_lines`."
+                        },
+                        "primary_category": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "display_name": {
+                              "type": "string"
+                            }
+                          },
+                          "description": "Primary business category: `id`, `display_name`."
+                        },
+                        "additional_categories": {
+                          "type": "array",
+                          "items": {
+                            "description": "Additional business categories."
+                          },
+                          "description": "Additional business categories."
+                        },
+                        "working_hours": {
+                          "type": "object",
+                          "properties": {},
+                          "description": "Working hours."
+                        },
+                        "service_area": {
+                          "type": "object",
+                          "properties": {},
+                          "description": "Service area settings."
+                        },
+                        "social_profiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "network": {
+                                "type": "string"
+                              },
+                              "url": {
+                                "type": "string"
+                              }
+                            },
+                            "description": "Social profiles, each with `network` and `url`."
+                          },
+                          "description": "Social profiles, each with `network` and `url`."
+                        }
+                      },
+                      "description": "Business profile of the location."
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {},
+                      "description": "Additional location properties. Note: currently returned as an object when populated but as an empty array `[]` when empty — typed clients should handle both."
+                    },
+                    "owner": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "parent_id": {},
+                        "email": {
+                          "type": "string"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "lang": {
+                          "type": "string"
+                        }
+                      },
+                      "description": "Location owner: `id`, `parent_id`, `email`, `first_name`, `last_name`, `lang`."
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "Permissions the current user has for this location."
+                      },
+                      "description": "Permissions the current user has for this location."
+                    },
+                    "auth": {
+                      "type": "object",
+                      "properties": {
+                        "google_connection_status": {
+                          "type": "string",
+                          "description": "Google connection status (can be `null`)."
+                        },
+                        "requires_reconnect": {
+                          "type": "boolean",
+                          "description": "Whether the Google account needs to be reconnected (can be `null`)."
+                        },
+                        "connected_at": {
+                          "type": "string",
+                          "description": "Connection timestamp (can be `null`)."
+                        }
+                      },
+                      "description": "Google connection state."
+                    },
+                    "audit": {
+                      "type": "object",
+                      "properties": {
+                        "score_percent": {
+                          "type": "integer",
+                          "description": "Latest audit score, in percent (can be `null`)."
+                        }
+                      },
+                      "description": "Audit summary."
+                    }
+                  }
+                },
+                "example": {
+                  "id": 15,
+                  "account_id": 42,
+                  "account_name": "Acme Agency",
+                  "title": "Folk Osteria",
+                  "lang": "en",
+                  "is_active": true,
+                  "is_demo": false,
+                  "created_at": "2026-04-10 09:15:00",
+                  "updated_at": "2026-08-04 12:00:00",
+                  "connection_status": "connected",
+                  "sync_status": "synced",
+                  "last_synced_at": "2026-08-04 12:00:00",
+                  "statistics": {
+                    "reviews_count": 60,
+                    "average_rating": 3.8,
+                    "listings_count": 57,
+                    "citations_score": 85,
+                    "audit_score_percent": 85
+                  },
+                  "profile": {
+                    "name": "Folk Osteria",
+                    "primary_phone": "1 801-843-9517",
+                    "additional_phones": [],
+                    "website": "https://folkosteria.com",
+                    "description": "Italian restaurant in Holladay.",
+                    "address": {
+                      "postal_code": "84117",
+                      "region_code": "US",
+                      "region_display_name": "United States",
+                      "administrative_area": "UT",
+                      "locality": "Holladay",
+                      "address_lines": [
+                        "Highland Dr."
+                      ]
+                    },
+                    "primary_category": {
+                      "id": "gcid:italian_restaurant",
+                      "display_name": "Italian restaurant"
+                    },
+                    "additional_categories": [],
+                    "working_hours": {},
+                    "service_area": {},
+                    "social_profiles": [
+                      {
+                        "network": "facebook",
+                        "url": "https://facebook.com/folkosteria"
+                      }
+                    ]
+                  },
+                  "properties": {},
+                  "owner": {
+                    "id": 7,
+                    "parent_id": null,
+                    "email": "owner@acme.agency",
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "lang": "en"
+                  },
+                  "permissions": [
+                    "view",
+                    "export"
+                  ],
+                  "auth": {
+                    "google_connection_status": "connected",
+                    "requires_reconnect": false,
+                    "connected_at": "2026-04-10 09:20:00"
+                  },
+                  "audit": {
+                    "score_percent": 85
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/overview": {
+      "get": {
+        "operationId": "getLocationOverview",
+        "tags": [
+          "Location Overview"
+        ],
+        "summary": "Get location overview",
+        "description": "Returns a combined reporting overview for a location in a single request: location details, Google Business Profile metrics and searches, reviews overview, citations overview, the latest audit report, and rankings summary.\n\nIf successful, the server returns the `200` HTTP status code and a combined overview object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/location-overview/#get-location-overview"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "account_id": {
+                          "type": "integer"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "lang": {
+                          "type": "string"
+                        },
+                        "is_active": {
+                          "type": "boolean"
+                        },
+                        "is_demo": {
+                          "type": "boolean"
+                        },
+                        "statistics": {
+                          "type": "object",
+                          "properties": {
+                            "reviews_count": {
+                              "type": "integer"
+                            },
+                            "average_rating": {
+                              "type": "number"
+                            },
+                            "audit_score_percent": {
+                              "type": "integer"
+                            }
+                          }
+                        }
+                      },
+                      "description": "Location snapshot. Note: this block is its own projection and differs from [Get location details](https://seranking.com/api/local-marketing-api/locations/#get-location-details) in several fields — hours are returned as `regular_hours`/`special_hours`/`more_hours` (not `profile.working_hours`), coordinates come in `latlng`, there is no `auth` block, the `statistics` key set differs, and extra fields such as `attributes`, `owner.type`, and `is_claimed_by_others` appear."
+                    },
+                    "gbp_metrics": {
+                      "type": "object",
+                      "properties": {
+                        "location_id": {
+                          "type": "integer"
+                        },
+                        "from": {
+                          "type": "string"
+                        },
+                        "to": {
+                          "type": "string"
+                        },
+                        "group_by": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "date": {
+                                "type": "string"
+                              },
+                              "metrics": {
+                                "type": "object",
+                                "properties": {
+                                  "business_impressions_desktop_maps": {
+                                    "type": "integer"
+                                  },
+                                  "business_impressions_desktop_search": {
+                                    "type": "integer"
+                                  },
+                                  "business_impressions_mobile_maps": {
+                                    "type": "integer"
+                                  },
+                                  "business_impressions_mobile_search": {
+                                    "type": "integer"
+                                  },
+                                  "business_direction_requests": {
+                                    "type": "integer"
+                                  },
+                                  "business_conversations": {
+                                    "type": "integer"
+                                  },
+                                  "call_clicks": {
+                                    "type": "integer"
+                                  },
+                                  "website_clicks": {
+                                    "type": "integer"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "description": "Google Business Profile metrics (see [Get Google Business Profile metrics](https://seranking.com/api/local-marketing-api/google-business-profile/#get-google-business-profile-metrics))."
+                    },
+                    "gbp_searches": {
+                      "type": "object",
+                      "properties": {
+                        "location_id": {
+                          "type": "integer"
+                        },
+                        "last_updated_date": {
+                          "type": "string"
+                        },
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "month": {
+                                "type": "string"
+                              },
+                              "direct": {
+                                "type": "integer"
+                              },
+                              "discovery": {
+                                "type": "integer"
+                              },
+                              "branded": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "description": "Google Business Profile searches trend (see [Get Google Business Profile searches trend](https://seranking.com/api/local-marketing-api/google-business-profile/#get-google-business-profile-searches-trend))."
+                    },
+                    "reviews_overview": {
+                      "type": "object",
+                      "properties": {
+                        "location_id": {
+                          "type": "integer"
+                        },
+                        "total_reviews": {
+                          "type": "integer"
+                        },
+                        "average_rating": {
+                          "type": "number"
+                        },
+                        "answered_reviews": {
+                          "type": "integer"
+                        },
+                        "unanswered_reviews": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Reviews overview (see [Get reviews overview](https://seranking.com/api/local-marketing-api/reviews/#get-reviews-overview))."
+                    },
+                    "citations_overview": {
+                      "type": "object",
+                      "properties": {
+                        "location_id": {
+                          "type": "integer"
+                        },
+                        "total_directories": {
+                          "type": "integer"
+                        },
+                        "active_directories": {
+                          "type": "integer"
+                        },
+                        "synced_directories": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Citations overview (see [Get business listings overview](https://seranking.com/api/local-marketing-api/business-listings/#get-business-listings-overview))."
+                    },
+                    "latest_audit_report": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer"
+                        },
+                        "location_id": {
+                          "type": "integer"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "score_percent": {
+                          "type": "integer"
+                        },
+                        "issues": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "check_code": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "severity": {
+                                "type": "string"
+                              },
+                              "is_passed": {
+                                "type": "boolean"
+                              },
+                              "result_status": {
+                                "type": "string"
+                              },
+                              "issues_count": {
+                                "type": "integer"
+                              },
+                              "issues_count_prev": {
+                                "type": "integer"
+                              },
+                              "weight": {
+                                "type": "number"
+                              },
+                              "directories": {
+                                "type": "object",
+                                "properties": {
+                                  "failed": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "not_checked": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "new": {
+                                    "type": "array",
+                                    "items": {}
+                                  },
+                                  "fixed": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "description": "The latest audit report: `id`, `location_id`, `created_at`, `score_percent`, and `issues` — the full per-check list with the same fields as `entries` in [Get latest audit report](https://seranking.com/api/local-marketing-api/local-marketing-audit/#get-latest-audit-report) (`check_code`, `category`, `severity`, `result_status`, `issues_count`, `weight`, and the `directories`/`reviews` drill-downs); only the envelope differs."
+                    },
+                    "rankings": {
+                      "type": "object",
+                      "properties": {
+                        "keywords_tracked": {
+                          "type": "integer",
+                          "description": "Number of tracked keywords (can be `null`)."
+                        },
+                        "average_position": {
+                          "type": "number",
+                          "description": "Average keyword position (can be `null`)."
+                        },
+                        "top_3_keywords_count": {
+                          "type": "integer",
+                          "description": "Number of keywords in the TOP 3 (can be `null`)."
+                        },
+                        "top_10_keywords_count": {
+                          "type": "integer",
+                          "description": "Number of keywords in the TOP 10 (can be `null`)."
+                        },
+                        "indexed_percent": {
+                          "type": "number",
+                          "description": "Percentage of indexed keywords (can be `null`)."
+                        }
+                      },
+                      "description": "Rankings summary for the location."
+                    }
+                  }
+                },
+                "example": {
+                  "location": {
+                    "id": 15,
+                    "account_id": 42,
+                    "title": "Folk Osteria",
+                    "lang": "en",
+                    "is_active": true,
+                    "is_demo": false,
+                    "statistics": {
+                      "reviews_count": 60,
+                      "average_rating": 3.8,
+                      "audit_score_percent": 85
+                    }
+                  },
+                  "gbp_metrics": {
+                    "location_id": 15,
+                    "from": "2026-05-01",
+                    "to": "2026-05-31",
+                    "group_by": "DAY",
+                    "items": [
+                      {
+                        "date": "2026-05-01",
+                        "metrics": {
+                          "business_impressions_desktop_maps": 46,
+                          "business_impressions_desktop_search": 307,
+                          "business_impressions_mobile_maps": 230,
+                          "business_impressions_mobile_search": 50,
+                          "business_direction_requests": 5,
+                          "business_conversations": 2,
+                          "call_clicks": 1,
+                          "website_clicks": 21
+                        }
+                      }
+                    ]
+                  },
+                  "gbp_searches": {
+                    "location_id": 15,
+                    "last_updated_date": "2026-05-31",
+                    "items": [
+                      {
+                        "month": "2026-05-01",
+                        "direct": 1200,
+                        "discovery": 3400,
+                        "branded": 800
+                      }
+                    ]
+                  },
+                  "reviews_overview": {
+                    "location_id": 15,
+                    "total_reviews": 60,
+                    "average_rating": 3.8,
+                    "answered_reviews": 52,
+                    "unanswered_reviews": 8
+                  },
+                  "citations_overview": {
+                    "location_id": 15,
+                    "total_directories": 66,
+                    "active_directories": 57,
+                    "synced_directories": 49
+                  },
+                  "latest_audit_report": {
+                    "id": 991,
+                    "location_id": 15,
+                    "created_at": "2026-05-30 08:00:00",
+                    "score_percent": 85,
+                    "issues": [
+                      {
+                        "check_code": "nap_consistency",
+                        "category": "listings",
+                        "severity": "error",
+                        "is_passed": false,
+                        "result_status": "failed",
+                        "issues_count": 3,
+                        "issues_count_prev": 5,
+                        "weight": 2.5,
+                        "directories": {
+                          "failed": [
+                            "foursquare"
+                          ],
+                          "not_checked": [],
+                          "new": [],
+                          "fixed": [
+                            "yelp"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "rankings": {
+                    "keywords_tracked": 40,
+                    "average_position": 8.3,
+                    "top_3_keywords_count": 9,
+                    "top_10_keywords_count": 21,
+                    "indexed_percent": 92.5
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/overview?from=2026-05-01&to=2026-05-31' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/rankings/keywords": {
+      "get": {
+        "operationId": "getLocalRankingsKeywordList",
+        "tags": [
+          "Local Rankings"
+        ],
+        "summary": "Get Local Rankings keyword list",
+        "description": "Returns the Local Rankings keyword list for a location with current and best positions, tracking point details, and a summary block.\n\nIf successful, the server returns the `200` HTTP status code, a `summary` block, an array of keywords in `items`, and a `pagination` object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/local-rankings/#get-local-rankings-keyword-list"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip. Default is `0`.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "keywords_tracked": {
+                          "type": "integer",
+                          "description": "Number of tracked keyword × tracking-point pairs."
+                        },
+                        "indexed_keywords": {
+                          "type": "integer",
+                          "description": "Number of indexed keywords."
+                        },
+                        "average_position": {
+                          "type": "number",
+                          "description": "Average position (can be `null`)."
+                        },
+                        "top_3_keywords_count": {
+                          "type": "integer",
+                          "description": "Number of keywords in the TOP 3."
+                        },
+                        "top_10_keywords_count": {
+                          "type": "integer",
+                          "description": "Number of keywords in the TOP 10."
+                        }
+                      },
+                      "description": "Summary across tracked keywords."
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "keyword_id": {
+                            "type": "integer",
+                            "description": "Keyword ID."
+                          },
+                          "keyword": {
+                            "type": "string",
+                            "description": "Keyword."
+                          },
+                          "current_position": {
+                            "type": "integer",
+                            "description": "Current position (can be `null`)."
+                          },
+                          "best_position": {
+                            "type": "integer",
+                            "description": "Best position (can be `null`)."
+                          },
+                          "found_at": {
+                            "type": "string",
+                            "description": "Date the keyword was first found (in `YYYY-MM-DD`, can be `null`)."
+                          },
+                          "key_to_geopoint_id": {
+                            "type": "integer",
+                            "description": "Keyword-to-geopoint binding ID (can be `null`)."
+                          },
+                          "tracking_point_details": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "description": "Tracking point ID (can be `null`)."
+                              },
+                              "type": {
+                                "type": "string",
+                                "description": "Tracking point type: `geopoint` or `grid`."
+                              },
+                              "label": {
+                                "type": "string",
+                                "description": "Tracking point label (can be `null`)."
+                              },
+                              "address": {
+                                "type": "string",
+                                "description": "Tracking point address (can be `null`)."
+                              },
+                              "latitude": {
+                                "type": "number",
+                                "description": "Latitude (can be `null`)."
+                              },
+                              "longitude": {
+                                "type": "number",
+                                "description": "Longitude (can be `null`)."
+                              },
+                              "key_to_geopoint_id": {
+                                "type": "integer",
+                                "description": "Keyword-to-geopoint binding ID, duplicated inside the tracking point details (can be `null`)."
+                              }
+                            },
+                            "description": "Tracking point details."
+                          }
+                        },
+                        "description": "List of keywords."
+                      },
+                      "description": "List of keywords."
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Pagination info: `total`, `limit`, `offset`."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "summary": {
+                    "keywords_tracked": 40,
+                    "indexed_keywords": 37,
+                    "average_position": 8.3,
+                    "top_3_keywords_count": 9,
+                    "top_10_keywords_count": 21
+                  },
+                  "items": [
+                    {
+                      "keyword_id": 7001,
+                      "keyword": "italian restaurant holladay",
+                      "current_position": 2,
+                      "best_position": 1,
+                      "found_at": "2026-04-15",
+                      "key_to_geopoint_id": 88,
+                      "tracking_point_details": {
+                        "id": 12,
+                        "type": "geopoint",
+                        "label": "Downtown",
+                        "address": "Holladay, UT",
+                        "latitude": 40.6689,
+                        "longitude": -111.8247,
+                        "key_to_geopoint_id": 88
+                      }
+                    }
+                  ],
+                  "pagination": {
+                    "total": 40,
+                    "limit": 100,
+                    "offset": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/rankings/keywords?from=2026-05-01&to=2026-05-31&limit=100&offset=0' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/rankings/positions": {
+      "get": {
+        "operationId": "getLocalRankingsPositions",
+        "tags": [
+          "Local Rankings"
+        ],
+        "summary": "Get Local Rankings positions",
+        "description": "Returns Local Rankings position history for a location by date and tracking point, with a summary block. Note: both `from` and `to` must be supplied — a partial or missing range returns an empty result set rather than the full history.\n\nIf successful, the server returns the `200` HTTP status code, a `summary` block, an array of position records in `items`, and a `pagination` object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/local-rankings/#get-local-rankings-positions"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip. Default is `0`.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "average_position": {
+                          "type": "number",
+                          "description": "Average position (can be `null`)."
+                        },
+                        "best_position": {
+                          "type": "integer",
+                          "description": "Best position (can be `null`)."
+                        },
+                        "worst_position": {
+                          "type": "integer",
+                          "description": "Worst position (can be `null`)."
+                        }
+                      },
+                      "description": "Summary across the selected period."
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "description": "Check date (in `YYYY-MM-DD`)."
+                          },
+                          "keyword_id": {
+                            "type": "integer",
+                            "description": "Keyword ID."
+                          },
+                          "position": {
+                            "type": "integer",
+                            "description": "Position on the check date (can be `null`)."
+                          },
+                          "tracking_point": {
+                            "type": "string",
+                            "description": "Tracking point (can be `null`)."
+                          },
+                          "key_to_geopoint_id": {
+                            "type": "integer",
+                            "description": "Keyword-to-geopoint binding ID (can be `null`)."
+                          },
+                          "tracking_point_details": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "type": {
+                                "type": "string"
+                              },
+                              "label": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "latitude": {
+                                "type": "number"
+                              },
+                              "longitude": {
+                                "type": "number"
+                              },
+                              "key_to_geopoint_id": {
+                                "type": "integer",
+                                "description": "Keyword-to-geopoint binding ID (can be `null`)."
+                              }
+                            },
+                            "description": "Tracking point details (same structure as in [Get Local Rankings keyword list](#get-local-rankings-keyword-list))."
+                          }
+                        },
+                        "description": "Position records."
+                      },
+                      "description": "Position records."
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Pagination info: `total`, `limit`, `offset`."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "summary": {
+                    "average_position": 8.3,
+                    "best_position": 1,
+                    "worst_position": 34
+                  },
+                  "items": [
+                    {
+                      "date": "2026-05-30",
+                      "keyword_id": 7001,
+                      "position": 2,
+                      "tracking_point": "Downtown",
+                      "key_to_geopoint_id": 88,
+                      "tracking_point_details": {
+                        "id": 12,
+                        "type": "geopoint",
+                        "label": "Downtown",
+                        "address": "Holladay, UT",
+                        "latitude": 40.6689,
+                        "longitude": -111.8247,
+                        "key_to_geopoint_id": 88
+                      }
+                    }
+                  ],
+                  "pagination": {
+                    "total": 1875,
+                    "limit": 100,
+                    "offset": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/rankings/positions?from=2026-05-01&to=2026-05-31&limit=100&offset=0' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/rankings/indexed-percent": {
+      "get": {
+        "operationId": "getRankingsIndexedPercent",
+        "tags": [
+          "Local Rankings"
+        ],
+        "summary": "Get rankings indexed percent",
+        "description": "Returns the percentage of tracked keywords for which the location is indexed.\n\nIf successful, the server returns the `200` HTTP status code and the indexed percent value. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/local-rankings/#get-rankings-indexed-percent"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "indexed_percent": {
+                      "type": "number",
+                      "description": "Percentage of indexed keywords."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "indexed_percent": 92.5
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/rankings/indexed-percent' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/gbp-metrics": {
+      "get": {
+        "operationId": "getGoogleBusinessProfileMetrics",
+        "tags": [
+          "Google Business Profile"
+        ],
+        "summary": "Get Google Business Profile metrics",
+        "description": "Returns Google Business Profile performance metrics for a location as a daily time series: impressions by platform and device (desktop/mobile × Search/Maps), direction requests, conversations, call clicks, and website clicks. Metric names inside each row follow Google’s own daily metric names, lowercased.\n\nIf successful, the server returns the `200` HTTP status code and a metrics time series. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/google-business-profile/#get-google-business-profile-metrics"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "group_by",
+            "in": "query",
+            "description": "Time grouping. Available value: `DAY` (default).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "from": {
+                      "type": "string",
+                      "description": "Start date of the range (in `YYYY-MM-DD`, can be `null`)."
+                    },
+                    "to": {
+                      "type": "string",
+                      "description": "End date of the range (in `YYYY-MM-DD`, can be `null`)."
+                    },
+                    "group_by": {
+                      "type": "string",
+                      "description": "Grouping applied to the series."
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string",
+                            "description": "Row date (in `YYYY-MM-DD`)."
+                          },
+                          "metrics": {
+                            "type": "object",
+                            "properties": {
+                              "business_impressions_desktop_maps": {
+                                "type": "integer"
+                              },
+                              "business_impressions_desktop_search": {
+                                "type": "integer"
+                              },
+                              "business_impressions_mobile_maps": {
+                                "type": "integer"
+                              },
+                              "business_impressions_mobile_search": {
+                                "type": "integer"
+                              },
+                              "business_direction_requests": {
+                                "type": "integer"
+                              },
+                              "business_conversations": {
+                                "type": "integer"
+                              },
+                              "call_clicks": {
+                                "type": "integer"
+                              },
+                              "website_clicks": {
+                                "type": "integer"
+                              }
+                            },
+                            "description": "Metric name to numeric value map for that date. Possible keys: `business_impressions_desktop_maps`, `business_impressions_desktop_search`, `business_impressions_mobile_maps`, `business_impressions_mobile_search`, `business_direction_requests`, `business_conversations`, `call_clicks`, `website_clicks`."
+                          }
+                        },
+                        "description": "Time series rows."
+                      },
+                      "description": "Time series rows."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "from": "2026-05-01",
+                  "to": "2026-05-31",
+                  "group_by": "DAY",
+                  "items": [
+                    {
+                      "date": "2026-05-01",
+                      "metrics": {
+                        "business_impressions_desktop_maps": 46,
+                        "business_impressions_desktop_search": 307,
+                        "business_impressions_mobile_maps": 230,
+                        "business_impressions_mobile_search": 50,
+                        "business_direction_requests": 5,
+                        "business_conversations": 2,
+                        "call_clicks": 1,
+                        "website_clicks": 21
+                      }
+                    },
+                    {
+                      "date": "2026-05-02",
+                      "metrics": {
+                        "business_impressions_desktop_maps": 39,
+                        "business_impressions_desktop_search": 284,
+                        "business_impressions_mobile_maps": 211,
+                        "business_impressions_mobile_search": 44,
+                        "business_direction_requests": 3,
+                        "business_conversations": 1,
+                        "call_clicks": 2,
+                        "website_clicks": 18
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/gbp-metrics?from=2026-05-01&to=2026-05-31&group_by=DAY' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/gbp-keywords": {
+      "get": {
+        "operationId": "getGoogleBusinessProfileKeywordReport",
+        "tags": [
+          "Google Business Profile"
+        ],
+        "summary": "Get Google Business Profile keyword report",
+        "description": "Returns the Google Business Profile keyword report for a location: search keywords with impressions and clicks, plus totals across the selected period. This endpoint uses token-based pagination.\n\nIf successful, the server returns the `200` HTTP status code and the keyword report. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/google-business-profile/#get-google-business-profile-keyword-report"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "description": "Number of items per page (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_token",
+            "in": "query",
+            "description": "Token of the next page, taken from `next_page_token` of the previous response.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "totals": {
+                      "type": "object",
+                      "properties": {
+                        "impressions": {
+                          "type": "integer",
+                          "description": "Total impressions (can be `null`)."
+                        },
+                        "clicks": {
+                          "type": "integer",
+                          "description": "Total clicks (can be `null`)."
+                        }
+                      },
+                      "description": "Totals across all keywords in the range."
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "keyword": {
+                            "type": "string",
+                            "description": "Search keyword."
+                          },
+                          "impressions": {
+                            "type": "integer",
+                            "description": "Impressions for the keyword (can be `null`)."
+                          },
+                          "clicks": {
+                            "type": "integer",
+                            "description": "Clicks for the keyword (can be `null`)."
+                          }
+                        },
+                        "description": "Keyword rows."
+                      },
+                      "description": "Keyword rows."
+                    },
+                    "next_page_token": {
+                      "type": "string",
+                      "description": "Token to request the next page. `null` if there are no more pages."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "totals": {
+                    "impressions": 15230,
+                    "clicks": 640
+                  },
+                  "items": [
+                    {
+                      "keyword": "italian restaurant near me",
+                      "impressions": 4200,
+                      "clicks": 180
+                    },
+                    {
+                      "keyword": "osteria holladay",
+                      "impressions": 2100,
+                      "clicks": 95
+                    }
+                  ],
+                  "next_page_token": "eyJvZmZzZXQiOjEwMH0"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/gbp-keywords?from=2026-05-01&to=2026-05-31&page_size=100' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/gbp-searches": {
+      "get": {
+        "operationId": "getGoogleBusinessProfileSearchesTrend",
+        "tags": [
+          "Google Business Profile"
+        ],
+        "summary": "Get Google Business Profile searches trend",
+        "description": "Returns the Google Business Profile searches trend for a location by month, broken down into direct, discovery, and branded searches.\n\nIf successful, the server returns the `200` HTTP status code and the searches trend. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/google-business-profile/#get-google-business-profile-searches-trend"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "last_updated_date": {
+                      "type": "string",
+                      "description": "Date the data was last updated (in `YYYY-MM-DD`, can be `null`)."
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "month": {
+                            "type": "string",
+                            "description": "Month, returned as the first day of the month (in `YYYY-MM-DD`), e.g. `2026-05-01`."
+                          },
+                          "direct": {
+                            "type": "integer",
+                            "description": "Direct searches — users searched for the business name or address (can be `null`)."
+                          },
+                          "discovery": {
+                            "type": "integer",
+                            "description": "Discovery searches — users searched for a category, product, or service (can be `null`)."
+                          },
+                          "branded": {
+                            "type": "integer",
+                            "description": "Branded searches — users searched for a brand related to the business (can be `null`)."
+                          }
+                        },
+                        "description": "Monthly rows."
+                      },
+                      "description": "Monthly rows."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "last_updated_date": "2026-05-31",
+                  "items": [
+                    {
+                      "month": "2026-04-01",
+                      "direct": 1100,
+                      "discovery": 3200,
+                      "branded": 720
+                    },
+                    {
+                      "month": "2026-05-01",
+                      "direct": 1200,
+                      "discovery": 3400,
+                      "branded": 800
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/gbp-searches?from=2026-01-01&to=2026-05-31' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/citations": {
+      "get": {
+        "operationId": "listBusinessListings",
+        "tags": [
+          "Business Listings"
+        ],
+        "summary": "List business listings",
+        "description": "Returns a list of business listings for a location across connected directories, including sync state and NAP (name, address, phone) consistency status. Note: the endpoint path uses `citations`, the API term for directory listings. Sorting is currently not applied by the upstream service for this endpoint (pending fix).\n\nIf successful, the server returns the `200` HTTP status code, an array of citations in `items`, and a `pagination` object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/business-listings/#list-business-listings"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip. Default is `0`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "description": "Sorting order: `asc` or `desc`. Default is `desc`.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "Citation ID."
+                          },
+                          "location_id": {
+                            "type": "integer",
+                            "description": "Location ID."
+                          },
+                          "directory_code": {
+                            "type": "string",
+                            "description": "Directory code."
+                          },
+                          "directory_name": {
+                            "type": "string",
+                            "description": "Directory name."
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Listing status in the directory."
+                          },
+                          "url": {
+                            "type": "string",
+                            "description": "Listing URL (can be `null`)."
+                          },
+                          "is_synced": {
+                            "type": "boolean",
+                            "description": "Whether the listing is synchronized (can be `null`)."
+                          },
+                          "updated_at": {
+                            "type": "string",
+                            "description": "Last update timestamp (can be `null`)."
+                          },
+                          "last_synced_at": {
+                            "type": "string",
+                            "description": "Last synchronization timestamp (can be `null`)."
+                          },
+                          "sync_error": {
+                            "nullable": true,
+                            "description": "Synchronization error message (can be `null`).",
+                            "type": "string"
+                          },
+                          "nap_match_status": {
+                            "type": "string",
+                            "description": "Overall NAP consistency status for the directory listing (can be `null`)."
+                          },
+                          "field_statuses": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              },
+                              "phone": {
+                                "type": "string"
+                              },
+                              "website": {
+                                "type": "string",
+                                "nullable": true
+                              }
+                            },
+                            "description": "Per-field match statuses: `name`, `address`, `phone`, `website` (each can be `null`)."
+                          }
+                        },
+                        "description": "List of citations."
+                      },
+                      "description": "List of citations."
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Pagination info: `total`, `limit`, `offset`."
+                    }
+                  }
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": 301,
+                      "location_id": 15,
+                      "directory_code": "yelp",
+                      "directory_name": "Yelp",
+                      "status": "active",
+                      "url": "https://yelp.com/biz/folk-osteria",
+                      "is_synced": true,
+                      "updated_at": "2026-08-01 10:00:00",
+                      "last_synced_at": "2026-08-01 10:00:00",
+                      "sync_error": null,
+                      "nap_match_status": "matched",
+                      "field_statuses": {
+                        "name": "matched",
+                        "address": "matched",
+                        "phone": "matched",
+                        "website": "matched"
+                      }
+                    },
+                    {
+                      "id": 302,
+                      "location_id": 15,
+                      "directory_code": "foursquare",
+                      "directory_name": "Foursquare",
+                      "status": "mismatched",
+                      "url": "https://foursquare.com/v/folk-osteria",
+                      "is_synced": false,
+                      "updated_at": "2026-07-28 14:30:00",
+                      "last_synced_at": "2026-07-20 09:00:00",
+                      "sync_error": null,
+                      "nap_match_status": "mismatched",
+                      "field_statuses": {
+                        "name": "matched",
+                        "address": "mismatched",
+                        "phone": "matched",
+                        "website": null
+                      }
+                    }
+                  ],
+                  "pagination": {
+                    "total": 66,
+                    "limit": 100,
+                    "offset": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/citations?limit=100&offset=0' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/citations/overview": {
+      "get": {
+        "operationId": "getBusinessListingsOverview",
+        "tags": [
+          "Business Listings"
+        ],
+        "summary": "Get business listings overview",
+        "description": "Returns aggregated business listing statistics for a location: total, active, and synchronized directory counts. Counters reflect the current synchronization state. Note: the endpoint path uses `citations`, the API term for directory listings.\n\nIf successful, the server returns the `200` HTTP status code and aggregated citation statistics. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/business-listings/#get-business-listings-overview"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "total_directories": {
+                      "type": "integer",
+                      "description": "Total number of directories."
+                    },
+                    "active_directories": {
+                      "type": "integer",
+                      "description": "Number of active directories."
+                    },
+                    "synced_directories": {
+                      "type": "integer",
+                      "description": "Number of synchronized directories."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "total_directories": 66,
+                  "active_directories": 57,
+                  "synced_directories": 49
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/citations/overview' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/reviews": {
+      "get": {
+        "operationId": "listReviews",
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "List reviews",
+        "description": "Returns a list of reviews for a location across all connected review sources.\n\nIf successful, the server returns the `200` HTTP status code, an array of reviews in `items`, and a `pagination` object. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/reviews/#list-reviews"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `100`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of items to skip. Default is `0`.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "Field to sort by: `created_at`, `rating`, `status`, `source`, or `lang`. An unsupported value returns an error.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort_order",
+            "in": "query",
+            "description": "Sorting order: `asc` or `desc`. Default is `desc`.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "Review ID."
+                          },
+                          "location_id": {
+                            "type": "integer",
+                            "description": "Location ID."
+                          },
+                          "source": {
+                            "type": "string",
+                            "description": "Review source code (e.g. `google`)."
+                          },
+                          "source_name": {
+                            "type": "string",
+                            "description": "Review source name (can be `null`)."
+                          },
+                          "rating": {
+                            "type": "integer",
+                            "description": "Review rating (can be `null`)."
+                          },
+                          "review": {
+                            "type": "string",
+                            "description": "Review text (can be `null`)."
+                          },
+                          "reviewer_name": {
+                            "type": "string",
+                            "description": "Reviewer name (can be `null`)."
+                          },
+                          "language": {
+                            "type": "string",
+                            "description": "Review language (can be `null`)."
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "description": "Review creation timestamp (can be `null`)."
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Review status (can be `null`)."
+                          },
+                          "review_url": {
+                            "type": "string",
+                            "description": "Link to the review (can be `null`)."
+                          },
+                          "is_answered": {
+                            "type": "boolean",
+                            "description": "Whether the review has a reply (can be `null`)."
+                          },
+                          "reply_status": {
+                            "type": "string",
+                            "description": "Reply status (can be `null`)."
+                          },
+                          "reply_text": {
+                            "type": "string",
+                            "description": "Reply text (can be `null`)."
+                          },
+                          "replied_at": {
+                            "type": "string",
+                            "description": "Reply timestamp (can be `null`)."
+                          },
+                          "sentiment": {
+                            "type": "string",
+                            "description": "Review sentiment (can be `null`)."
+                          }
+                        },
+                        "description": "List of reviews."
+                      },
+                      "description": "List of reviews."
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Pagination info: `total`, `limit`, `offset`."
+                    }
+                  }
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": 501,
+                      "location_id": 15,
+                      "source": "google",
+                      "source_name": "Google",
+                      "rating": 5,
+                      "review": "Great pasta and friendly staff!",
+                      "reviewer_name": "John S.",
+                      "language": "en",
+                      "created_at": "2026-05-12 18:40:00",
+                      "status": "published",
+                      "review_url": "https://maps.google.com/reviews/501",
+                      "is_answered": true,
+                      "reply_status": "published",
+                      "reply_text": "Thank you, John! See you again soon.",
+                      "replied_at": "2026-05-13 09:05:00",
+                      "sentiment": "positive"
+                    }
+                  ],
+                  "pagination": {
+                    "total": 60,
+                    "limit": 100,
+                    "offset": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/reviews?from=2026-05-01&to=2026-05-31&limit=100&offset=0' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/reviews/overview": {
+      "get": {
+        "operationId": "getReviewsOverview",
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Get reviews overview",
+        "description": "Returns aggregated review statistics for a location: totals, average rating, answered/unanswered counts, rating distribution, and a breakdown by source. When `from`/`to` are provided, aggregates are computed for that period; otherwise they cover the location’s entire history.\n\nIf successful, the server returns the `200` HTTP status code and aggregated review statistics. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/reviews/#get-reviews-overview"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "End date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "location_id": {
+                      "type": "integer",
+                      "description": "Location ID."
+                    },
+                    "total_reviews": {
+                      "type": "integer",
+                      "description": "Total number of reviews, **including unrated ones** — while `average_rating` and `rating_distribution` cover rated reviews only, so `total_reviews` × `average_rating` does not give a weighted total."
+                    },
+                    "average_rating": {
+                      "type": "number",
+                      "description": "Average rating across **rated** reviews only. A distinct metric from `statistics.average_rating` in the location endpoints — the two may not match (can be `null`)."
+                    },
+                    "answered_reviews": {
+                      "type": "integer",
+                      "description": "Number of reviews with a reply."
+                    },
+                    "unanswered_reviews": {
+                      "type": "integer",
+                      "description": "Number of reviews without a reply."
+                    },
+                    "rating_distribution": {
+                      "type": "object",
+                      "properties": {
+                        "1_star": {
+                          "type": "integer"
+                        },
+                        "2_star": {
+                          "type": "integer"
+                        },
+                        "3_star": {
+                          "type": "integer"
+                        },
+                        "4_star": {
+                          "type": "integer"
+                        },
+                        "5_star": {
+                          "type": "integer"
+                        }
+                      },
+                      "description": "Number of reviews per rating: `1_star` … `5_star`."
+                    },
+                    "items_by_source": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "type": "string",
+                            "description": "Review source code."
+                          },
+                          "reviews_count": {
+                            "type": "integer",
+                            "description": "Number of reviews from this source."
+                          },
+                          "average_rating": {
+                            "type": "number",
+                            "description": "Average rating across **rated** reviews only. A distinct metric from `statistics.average_rating` in the location endpoints — the two may not match (can be `null`)."
+                          },
+                          "answered_reviews": {
+                            "type": "integer",
+                            "description": "Number of reviews with a reply."
+                          },
+                          "unanswered_reviews": {
+                            "type": "integer",
+                            "description": "Number of reviews without a reply."
+                          }
+                        },
+                        "description": "Per-source breakdown."
+                      },
+                      "description": "Per-source breakdown."
+                    }
+                  }
+                },
+                "example": {
+                  "location_id": 15,
+                  "total_reviews": 60,
+                  "average_rating": 3.8,
+                  "answered_reviews": 52,
+                  "unanswered_reviews": 8,
+                  "rating_distribution": {
+                    "1_star": 4,
+                    "2_star": 5,
+                    "3_star": 10,
+                    "4_star": 21,
+                    "5_star": 20
+                  },
+                  "items_by_source": [
+                    {
+                      "source": "google",
+                      "reviews_count": 55,
+                      "average_rating": 3.9,
+                      "answered_reviews": 50,
+                      "unanswered_reviews": 5
+                    },
+                    {
+                      "source": "facebook",
+                      "reviews_count": 5,
+                      "average_rating": 3.4,
+                      "answered_reviews": 2,
+                      "unanswered_reviews": 3
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/reviews/overview?from=2026-05-01&to=2026-05-31' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/audit/reports/latest": {
+      "get": {
+        "operationId": "getLatestAuditReport",
+        "tags": [
+          "Local Marketing Audit"
+        ],
+        "summary": "Get latest audit report",
+        "description": "Returns the latest Local Marketing audit report for a location. The response mirrors the report structure that drives the Local Marketing audit page: summary counters, per-check entries, previous issue counts, and optional directories/reviews payloads for checks with detailed drill-downs.\n\nIf successful, the server returns the `200` HTTP status code and the audit report. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/local-marketing-audit/#get-latest-audit-report"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "description": "Report date (in `YYYY-MM-DD`). If omitted, the latest finished report is returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Report generation status (e.g. `finished`)."
+                    },
+                    "date": {
+                      "type": "string",
+                      "description": "Report date (in `YYYY-MM-DD`)."
+                    },
+                    "summary": {
+                      "type": "object",
+                      "properties": {
+                        "score": {
+                          "type": "integer",
+                          "description": "Overall audit score, 0–100 — the same value exposed as `audit_score_percent`/`score_percent` in the location endpoints (can be `null`)."
+                        },
+                        "total_errors": {
+                          "type": "integer",
+                          "description": "Total number of errors."
+                        },
+                        "total_warnings": {
+                          "type": "integer",
+                          "description": "Total number of warnings."
+                        },
+                        "total_notices": {
+                          "type": "integer",
+                          "description": "Total number of notices."
+                        }
+                      },
+                      "description": "Summary counters."
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "check_code": {
+                            "type": "string",
+                            "description": "Stable audit check code used by frontend translations and navigation."
+                          },
+                          "category": {
+                            "type": "string",
+                            "description": "Audit category used on the audit page (e.g. `profile`)."
+                          },
+                          "severity": {
+                            "type": "string",
+                            "description": "Severity bucket: `error`, `warning`, or `notice`."
+                          },
+                          "is_passed": {
+                            "type": "boolean",
+                            "description": "Deprecated compatibility field from the current frontend API."
+                          },
+                          "result_status": {
+                            "type": "string",
+                            "description": "Actual result status: `passed`, `failed`, or `undefined`."
+                          },
+                          "issues_count": {
+                            "type": "integer",
+                            "description": "Number of issues found by the check (can be `null`)."
+                          },
+                          "issues_count_prev": {
+                            "type": "integer",
+                            "description": "Number of issues in the previous report (can be `null`)."
+                          },
+                          "weight": {
+                            "type": "number",
+                            "description": "Check weight in the overall score."
+                          },
+                          "directories": {
+                            "type": "object",
+                            "properties": {
+                              "failed": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "not_checked": {
+                                "type": "array",
+                                "items": {}
+                              },
+                              "new": {
+                                "type": "array",
+                                "items": {}
+                              },
+                              "fixed": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "description": "Directory drill-down for directory checks: `failed`, `not_checked`, `new`, `fixed` (arrays of directory codes)."
+                          },
+                          "reviews": {
+                            "type": "object",
+                            "properties": {
+                              "failed": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "new": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "fixed": {
+                                "type": "array",
+                                "items": {}
+                              }
+                            },
+                            "description": "Review drill-down for review checks: `failed`, `new`, `fixed` (arrays)."
+                          }
+                        },
+                        "description": "Per-check entries."
+                      },
+                      "description": "Per-check entries."
+                    }
+                  }
+                },
+                "example": {
+                  "status": "finished",
+                  "date": "2026-05-30",
+                  "summary": {
+                    "score": 85,
+                    "total_errors": 2,
+                    "total_warnings": 5,
+                    "total_notices": 3
+                  },
+                  "entries": [
+                    {
+                      "check_code": "nap_consistency",
+                      "category": "listings",
+                      "severity": "error",
+                      "is_passed": false,
+                      "result_status": "failed",
+                      "issues_count": 3,
+                      "issues_count_prev": 5,
+                      "weight": 2.5,
+                      "directories": {
+                        "failed": [
+                          "foursquare",
+                          "hotfrog"
+                        ],
+                        "not_checked": [],
+                        "new": [],
+                        "fixed": [
+                          "yelp"
+                        ]
+                      }
+                    },
+                    {
+                      "check_code": "unanswered_reviews",
+                      "category": "reviews",
+                      "severity": "warning",
+                      "is_passed": false,
+                      "result_status": "failed",
+                      "issues_count": 8,
+                      "issues_count_prev": 12,
+                      "weight": 1,
+                      "reviews": {
+                        "failed": [
+                          "501",
+                          "502"
+                        ],
+                        "new": [
+                          "503"
+                        ],
+                        "fixed": []
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/audit/reports/latest?date=2026-05-30' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    },
+    "/v1/local-marketing/locations/{location_id}/audit/reports": {
+      "get": {
+        "operationId": "getAuditReportHistory",
+        "tags": [
+          "Local Marketing Audit"
+        ],
+        "summary": "Get audit report history",
+        "description": "Returns the audit report history for a location as date and summary pairs, sorted by date.\n\nIf successful, the server returns the `200` HTTP status code and a top-level JSON **array** (not an object) of history items. Each item is itself a two-element array: the report date (in `YYYY-MM-DD`) followed by a summary object with the fields below. Returns HTTP `404` if the location is not found.",
+        "externalDocs": {
+          "description": "Documentation",
+          "url": "https://seranking.com/api/local-marketing-api/local-marketing-audit/#get-audit-report-history"
+        },
+        "parameters": [
+          {
+            "name": "location_id",
+            "in": "path",
+            "required": true,
+            "description": "Location ID (path parameter).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "description": "History start date (in `YYYY-MM-DD`).",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of items to return (1–1000). Default is `10`.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {}
+                  }
+                },
+                "example": [
+                  [
+                    "2026-05-30",
+                    {
+                      "status": "finished",
+                      "score": 85,
+                      "total_errors": 2,
+                      "total_warnings": 5,
+                      "total_notices": 3
+                    }
+                  ],
+                  [
+                    "2026-05-23",
+                    {
+                      "status": "finished",
+                      "score": 82,
+                      "total_errors": 3,
+                      "total_warnings": 6,
+                      "total_notices": 3
+                    }
+                  ]
+                ]
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "402": {
+            "$ref": "#/components/responses/PaymentRequired"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Shell",
+            "label": "cURL",
+            "source": "curl -X GET 'https://api.seranking.com/v1/local-marketing/locations/15/audit/reports?start_date=2026-05-01&limit=10' \\\n  -H 'Authorization: Token YOUR_API_KEY'"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "tokenAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "Recommended. Send the API key in the `Authorization` header with the `Token` scheme: `Authorization: Token YOUR_API_KEY`."
+      },
+      "apikeyQuery": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apikey",
+        "description": "Alternative. Send the API key as the `apikey` query parameter. It must always be a query parameter, even when other data goes in the request body."
+      }
+    },
+    "schemas": {
+      "GatewayError": {
+        "type": "object",
+        "description": "Error returned by the API gateway before the request reaches the API.",
+        "properties": {
+          "error_description": {
+            "type": "string",
+            "description": "Human-readable error message."
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "The API key is missing, unknown or disabled.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GatewayError"
+            },
+            "example": {
+              "error_description": "Authentication failed. Please ensure you have a valid, enabled API key. To get an API key, please contact us at api@seranking.com."
+            }
+          }
+        }
+      },
+      "PaymentRequired": {
+        "description": "The account has no active subscription or not enough credits for this request.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GatewayError"
+            },
+            "example": {
+              "error_description": "Insufficient funds, API key is temporarily disabled. Please make a payment to enable you API key, or contact us at api@seranking.com."
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "The API key may not call this endpoint or use this HTTP method.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GatewayError"
+            },
+            "example": {
+              "error_description": "Authentication failed. Please ensure you have a valid, enabled API key. To get an API key, please contact us at api@seranking.com."
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "The request rate limit of the API key was exceeded. See [API rate limits](https://seranking.com/api/rate-limits/).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/GatewayError"
+            },
+            "example": {
+              "error_description": "You made 11 requests, which is over the allowed limit of 10 requests per second. Please try again later."
+            }
+          }
+        }
+      }
+    }
+  }
+}
